@@ -9,7 +9,9 @@ import {
     paginateFilterLogEvents
 } from "@aws-sdk/client-cloudwatch-logs"; // ES Modules import
 
-const client = new CloudWatchLogsClient({region: "ap-southeast-1"});
+// const client = new CloudWatchLogsClient({region: "ap-southeast-1"});
+//do not specify a region, depend on the AWS_DEFAULT_REGION specified in the environment?
+const client = new CloudWatchLogsClient();
 
 const paginatorConfig = {
     client,

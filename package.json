@@ -12,6 +12,7 @@
   "dependencies": {
     "@aws-sdk/client-cloudwatch": "^3.20.0",
     "@aws-sdk/client-cloudwatch-logs": "^3.20.0",
+    "@aws-sdk/client-dynamodb": "^3.21.0",
     "@aws-sdk/credential-provider-ini": "^3.20.0",
     "chalk": "^4.1.1",
     "luxon": "^1.27.0",

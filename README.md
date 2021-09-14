@@ -4,3 +4,5 @@ package.json changed type to module to support ECMAScript module system (use imp
 
 //check if stream out
 https://stackoverflow.com/questions/15466383/how-to-detect-if-a-node-js-script-is-running-through-a-shell-pipe
+
+see curl --help for inspiration

@@ -17,7 +17,7 @@ function formatDate(date) {
         // return moment(date).format('ddd DD-MMM HH:mm:ss');
         // console.log('date',date)
         // return moment(date, "x").format('DD-MMM HH:mm:ss.SSS');
-        return moment(date, "x").format('HH:mm:ss.SSS');
+        return moment(date, "x").format('DD-MMM HH:mm:ss.SSS');
     } else {
         return date; //if undefined return nothing
     }

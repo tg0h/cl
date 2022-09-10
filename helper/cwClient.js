@@ -35,6 +35,9 @@ let run = async function (argv) {
   };
 
   if (filterPattern) {
+    if (typeof filterPattern == "number") {
+      filterPattern = filterPattern.toString();
+    }
     input.filterPattern = filterPattern;
   }
 

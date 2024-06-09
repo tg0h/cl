@@ -14,15 +14,21 @@ function splitKvFilterOption(filterOption) {
   // console.log("timg 🚀 _value", _value);
 
   let value;
+  let operator = "=";
   let numberValue = Number.parseInt(_value);
   if (numberValue) {
+    // number
     value = numberValue;
+  } else if (_value === "true" || _value === "false") {
+    // boolean
+    value = _value;
+    operator = "is";
   } else {
     // string
     value = `"${_value}"`;
   }
 
-  return `( $.${key}=${value} )`;
+  return `( $.${key} ${operator} ${value} )`;
 }
 
 function buildFilter({ pattern, filters, messageFilter }) {

@@ -51,13 +51,13 @@ let argv = yargs(hideBin(process.argv))
   .option("messageFilter", {
     alias: "m",
     type: "string",
-    describe: "filter by msg",
+    describe: "filter by log msg",
   })
   .option("filters", {
     alias: "f",
     type: "string",
     describe:
-      "this filter is case sensitive. cloudwatch json filters to filter logs by specify k=v pairs eg -f req.method=POST -f number=30",
+      "this filter is case sensitive. cloudwatch json filters to filter logs by specify k=v pairs eg -f req.method=POST -f number=30 -f boolean=true",
   })
   .option("l", {
     alias: "logLevel",

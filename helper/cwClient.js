@@ -8,11 +8,58 @@ import {
   paginateFilterLogEvents,
 } from "@aws-sdk/client-cloudwatch-logs"; // ES Modules import
 
-function buildFilter({ pattern }) {
-  return pattern;
+function splitKvFilterOption(filterOption) {
+  let [key, _value] = filterOption.split("=");
+  // console.log("timg 🚀 key", key);
+  // console.log("timg 🚀 _value", _value);
+
+  let value;
+  let numberValue = Number.parseInt(_value);
+  if (numberValue) {
+    value = numberValue;
+  } else {
+    // string
+    value = `"${_value}"`;
+  }
+
+  return `( $.${key}=${value} )`;
 }
+
+// TODO: support -f number=30
+function buildFilter({ pattern, filters }) {
+  let filterPatterns;
+
+  let positionalFilter, argFilter;
+  if (pattern) {
+    // positional argument
+    let numberValue = Number.parseInt(pattern);
+    if (numberValue) {
+      positionalFilter = `${numberValue}`;
+    } else {
+      positionalFilter = `"${pattern}"`;
+    }
+  } else if (filters) {
+    // cannot mix regex and json filter patterns, so use else if
+    // -f option
+    // json filters are surrounded by { }, eg { $.eventType =}
+    if (typeof filters === "string") {
+      argFilter = `{ ${splitKvFilterOption(filters)} }`;
+    } else {
+      argFilter = `{ ${filters
+        .map((filter) => {
+          return splitKvFilterOption(filter);
+        })
+        .join(" && ")}}`;
+    }
+  }
+  return positionalFilter ?? argFilter;
+}
+
 function buildRunOptions(argv) {
-  const filterPattern = buildFilter({ pattern: argv.pattern });
+  const filterPattern = buildFilter({
+    pattern: argv.pattern,
+    filters: argv.filters,
+  });
 
   return {
     start: argv.start,
@@ -50,9 +97,6 @@ let run = async function ({ start, end, filterPattern, logName }) {
   };
 
   if (filterPattern) {
-    if (typeof filterPattern == "number") {
-      filterPattern = filterPattern.toString();
-    }
     input.filterPattern = filterPattern;
   }
 

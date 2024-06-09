@@ -10,6 +10,7 @@ import {
 
 // const client = new CloudWatchLogsClient({region: "ap-southeast-1"});
 //do not specify a region, depend on the AWS_DEFAULT_REGION specified in the environment?
+// const client = new CloudWatchLogsClient({ region: "us-west-2" });
 const client = new CloudWatchLogsClient();
 
 const paginatorConfig = {
@@ -26,6 +27,7 @@ let run = async function (argv) {
   let start = argv.start ? convertDate(argv.start) : defaultStart;
   let end = argv.end ? convertDate(argv.end) : Date.now();
   let filterPattern = argv.pattern;
+  console.log("filter pattern is", filterPattern);
   console.log("start", formatDate(start));
   console.log("end", formatDate(end));
   let input = {

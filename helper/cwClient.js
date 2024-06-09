@@ -58,7 +58,7 @@ function buildFilter({ pattern, filters, messageFilter }) {
     }
 
     if (messageFilter) {
-      _argFilter = (_argFilter ?? []).concat(`( $.msg=${messageFilter} )`);
+      _argFilter = (_argFilter ?? []).concat(`( $.msg=*${messageFilter}* )`);
     }
     argFilter = `{ ${_argFilter.join(" && ")} }`;
   }

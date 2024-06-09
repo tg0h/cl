@@ -5,6 +5,7 @@ import { hideBin } from "yargs/helpers";
 import { run } from "./helper/cwClient.js";
 import { convertDate } from "./helper/time.js";
 import { decorate } from "./helper/decorate.js";
+import { rewrite } from "./helper/rewrite.js";
 import { format } from "./helper/format.js";
 
 let argv = yargs(hideBin(process.argv))
@@ -28,6 +29,7 @@ let argv = yargs(hideBin(process.argv))
     async (argv) => {
       let result = await run(argv);
 
+      result = rewrite(result, { rewrite: argv.rewrite }); // rewrite text log level to number log level so that pino pretty can filter zzzz
       result = decorate(result, { decorate: argv.decorate });
 
       format(result, {
@@ -44,7 +46,10 @@ let argv = yargs(hideBin(process.argv))
     alias: "end",
   })
   .option("r", {
-    alias: "range",
+    alias: "rewrite",
+    default: true,
+    describe:
+      "rewrite text log level of eg 'warn' to number log level of eg 40 so that pino pretty can filter the log level later",
   })
   .option("prettify", {
     alias: "p",

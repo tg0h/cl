@@ -1,20 +1,26 @@
 import { formatDate } from "./time.js";
+import { prettyFactory } from "pino-pretty";
 import chalk from "chalk";
 
-function format(result, { prefixSgTime }) {
-  // row.eventId
-  // row.ingestionTime
-  // row.logStreamName
-  // row.timestamp
+function format(logEvents, { prefixSgTime, prettify }) {
+  // logEvent.eventId
+  // logEvent.ingestionTime
+  // logEvent.logStreamName
+  // logEvent.timestamp
 
-  result.forEach((row) => {
-    // console.log(formatDate(row.timestamp), row.message);
-    let t = formatDate(row.timestamp);
-    // console.log('t',chalk.green(t))
-    if (prefixSgTime) {
-      console.log(chalk.green(t), row.message);
+  // provide cli options to prettyFactory if needed
+  const pretty = prettyFactory();
+
+  logEvents.forEach((logEvent) => {
+    if (prettify) {
+      const prettyRow = pretty(logEvent.message);
+      console.log(prettyRow);
+    } else if (prefixSgTime) {
+      let sgDateTime = formatDate(logEvent.timestamp);
+      console.log(chalk.green(sgDateTime), logEvent.message);
     } else {
-      console.log(row.message);
+      // plain
+      console.log(logEvent.message);
     }
   });
 }

@@ -26,12 +26,14 @@ let argv = yargs(hideBin(process.argv))
         });
     },
     async (argv) => {
-      // console.log('argv log name',argv.logName)
       let result = await run(argv);
 
-      let options = { prefixSgTime: argv.prefixSgTime };
       result = decorate(result, { decorate: argv.decorate });
-      format(result, options);
+
+      format(result, {
+        prefixSgTime: argv.prefixSgTime,
+        prettify: argv.prettify,
+      });
     },
   )
   .option("s", {
@@ -44,6 +46,10 @@ let argv = yargs(hideBin(process.argv))
   .option("r", {
     alias: "range",
   })
+  .option("prettify", {
+    alias: "p",
+    describe: "prettify log with pino pretty",
+  })
   .option("decorate", {
     default: true,
     type: "boolean",
@@ -51,7 +57,6 @@ let argv = yargs(hideBin(process.argv))
       "add sg time to the log body (convert the timestamp of the cloudwatch log event)",
   })
   .option("prefixSgTime", {
-    alias: "p",
     type: "boolean",
     describe: "add sg time as a header to the log",
     default: false,

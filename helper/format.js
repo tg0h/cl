@@ -2,19 +2,65 @@ import { formatDate } from "./time.js";
 import { prettyFactory } from "pino-pretty";
 import chalk from "chalk";
 
-function format(logEvents, { prefixSgTime, prettify }) {
+function buildFormatOptions(argv) {
+  let minimumLevel;
+  if (argv.logLevel) {
+    switch (argv.logLevel) {
+      case "f":
+        minimumLevel = "fatal";
+        break;
+      case "e":
+        minimumLevel = "error";
+        break;
+      case "w":
+        minimumLevel = "warn";
+        break;
+      case "i":
+        minimumLevel = "info";
+        break;
+      case "d":
+        minimumLevel = "debug";
+        break;
+      case "t":
+        minimumLevel = "trace";
+        break;
+      default:
+        minimumLevel = "debug";
+        break;
+    }
+  }
+
+  return {
+    prefixSgTime: argv.prefixSgTime,
+    prettify: argv.prettify,
+    minimumLevel,
+  };
+}
+
+function format(logEvents, { prefixSgTime, prettify, minimumLevel }) {
   // logEvent.eventId
   // logEvent.ingestionTime
   // logEvent.logStreamName
   // logEvent.timestamp
 
   // provide cli options to prettyFactory if needed
-  const pretty = prettyFactory();
+  // const opts = buildPinoPrettyOpts();
+  const pretty = prettyFactory({
+    // useOnlyCustomProps: false,
+    minimumLevel,
+    // hideObject: true,
+    // levelFirst: false,
+    // levelKey: "level",
+    // singleLine: true,
+    // include: "level,time",
+  });
 
   logEvents.forEach((logEvent) => {
     if (prettify) {
       const prettyRow = pretty(logEvent.message);
-      console.log(prettyRow);
+      if (prettyRow) {
+        console.log(prettyRow);
+      }
     } else if (prefixSgTime) {
       let sgDateTime = formatDate(logEvent.timestamp);
       console.log(chalk.green(sgDateTime), logEvent.message);
@@ -25,4 +71,4 @@ function format(logEvents, { prefixSgTime, prettify }) {
   });
 }
 
-export { format };
+export { format, buildFormatOptions };

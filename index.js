@@ -6,7 +6,7 @@ import { run } from "./helper/cwClient.js";
 import { convertDate } from "./helper/time.js";
 import { decorate } from "./helper/decorate.js";
 import { rewrite } from "./helper/rewrite.js";
-import { format } from "./helper/format.js";
+import { format, buildFormatOptions } from "./helper/format.js";
 
 let argv = yargs(hideBin(process.argv))
   .usage("$0 <logName> [pattern] [options]")
@@ -32,10 +32,7 @@ let argv = yargs(hideBin(process.argv))
       result = rewrite(result, { rewrite: argv.rewrite }); // rewrite text log level to number log level so that pino pretty can filter zzzz
       result = decorate(result, { decorate: argv.decorate });
 
-      format(result, {
-        prefixSgTime: argv.prefixSgTime,
-        prettify: argv.prettify,
-      });
+      format(result, buildFormatOptions(argv));
     },
   )
   .option("s", {
@@ -44,6 +41,14 @@ let argv = yargs(hideBin(process.argv))
   })
   .option("e", {
     alias: "end",
+  })
+  .option("l", {
+    alias: "logLevel",
+    type: "string",
+    choices: ["f", "e", "w", "i", "d", "t"],
+    default: "i",
+    describe:
+      "minimum log level to print (f) fatal, (e) error, (w) warn, (i) info, (d) debug, (t) trace",
   })
   .option("r", {
     alias: "rewrite",

@@ -8,11 +8,16 @@ import {
   paginateFilterLogEvents,
 } from "@aws-sdk/client-cloudwatch-logs"; // ES Modules import
 
+function buildFilter({ pattern }) {
+  return pattern;
+}
 function buildRunOptions(argv) {
+  const filterPattern = buildFilter({ pattern: argv.pattern });
+
   return {
     start: argv.start,
     end: argv.end,
-    filterPattern: argv.pattern,
+    filterPattern,
     logName: argv.logName,
   };
 }

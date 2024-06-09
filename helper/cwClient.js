@@ -8,7 +8,16 @@ import {
   paginateFilterLogEvents,
 } from "@aws-sdk/client-cloudwatch-logs"; // ES Modules import
 
-let run = async function (argv) {
+function buildRunOptions(argv) {
+  return {
+    start: argv.start,
+    end: argv.end,
+    filterPattern: argv.pattern,
+    logName: argv.logName,
+  };
+}
+
+let run = async function ({ start, end, filterPattern, logName }) {
   // const client = new CloudWatchLogsClient({region: "ap-southeast-1"});
   // do not specify a region, depend on the AWS_DEFAULT_REGION specified in the environment?
   // const client = new CloudWatchLogsClient({ region: "us-west-2" });
@@ -24,16 +33,15 @@ let run = async function (argv) {
   // 1 hour ago
   let defaultStart = Date.now() - 10 * 60 * 1000;
 
-  let start = argv.start ? convertDate(argv.start) : defaultStart;
-  let end = argv.end ? convertDate(argv.end) : Date.now();
-  let filterPattern = argv.pattern;
+  let _start = start ? convertDate(start) : defaultStart;
+  let _end = end ? convertDate(end) : Date.now();
   console.log("filter pattern is", filterPattern);
-  console.log("start", formatDate(start));
-  console.log("end", formatDate(end));
+  console.log("start", formatDate(_start));
+  console.log("end", formatDate(_end));
   let input = {
-    logGroupName: argv.logName,
-    startTime: start,
-    endTime: end,
+    logGroupName: logName,
+    startTime: _start,
+    endTime: _end,
   };
 
   if (filterPattern) {
@@ -55,4 +63,4 @@ let run = async function (argv) {
   return results;
 };
 
-export { run };
+export { run, buildRunOptions };

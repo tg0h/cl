@@ -30,14 +30,20 @@ function buildFormatOptions(argv) {
     }
   }
 
+  console.log("timg 🚀 argv", argv);
+
   return {
     prefixSgTime: argv.prefixSgTime,
     prettify: argv.prettify,
+    singleLine: argv.singleLine,
     minimumLevel,
   };
 }
 
-function format(logEvents, { prefixSgTime, prettify, minimumLevel }) {
+function format(
+  logEvents,
+  { prefixSgTime, prettify, minimumLevel, singleLine },
+) {
   // logEvent.eventId
   // logEvent.ingestionTime
   // logEvent.logStreamName
@@ -51,7 +57,7 @@ function format(logEvents, { prefixSgTime, prettify, minimumLevel }) {
     // hideObject: true,
     // levelFirst: false,
     // levelKey: "level",
-    // singleLine: true,
+    singleLine,
     // include: "level,time",
   });
 

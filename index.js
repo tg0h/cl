@@ -50,6 +50,12 @@ let argv = yargs(hideBin(process.argv))
     describe:
       "minimum log level to print (f) fatal, (e) error, (w) warn, (i) info, (d) debug, (t) trace",
   })
+  .option("S", {
+    alias: "singleLine",
+    type: "boolean",
+    default: false,
+    describe: "print log messages in a single line",
+  })
   .option("r", {
     alias: "rewrite",
     default: true,

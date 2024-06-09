@@ -48,6 +48,11 @@ let argv = yargs(hideBin(process.argv))
     alias: "d",
     describe: "show debug logs",
   })
+  .option("messageFilter", {
+    alias: "m",
+    type: "string",
+    describe: "filter by msg",
+  })
   .option("filters", {
     alias: "f",
     type: "string",

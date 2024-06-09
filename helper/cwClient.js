@@ -25,11 +25,10 @@ function splitKvFilterOption(filterOption) {
   return `( $.${key}=${value} )`;
 }
 
-// TODO: support -f number=30
-function buildFilter({ pattern, filters }) {
+function buildFilter({ pattern, filters, messageFilter }) {
   let filterPatterns;
 
-  let positionalFilter, argFilter;
+  let positionalFilter, argFilter, _argFilter;
   if (pattern) {
     // positional argument
     let numberValue = Number.parseInt(pattern);
@@ -38,19 +37,24 @@ function buildFilter({ pattern, filters }) {
     } else {
       positionalFilter = `"${pattern}"`;
     }
-  } else if (filters) {
+  } else if (filters || messageFilter) {
     // cannot mix regex and json filter patterns, so use else if
     // -f option
     // json filters are surrounded by { }, eg { $.eventType =}
-    if (typeof filters === "string") {
-      argFilter = `{ ${splitKvFilterOption(filters)} }`;
-    } else {
-      argFilter = `{ ${filters
-        .map((filter) => {
-          return splitKvFilterOption(filter);
-        })
-        .join(" && ")}}`;
+    if (filters && typeof filters === "string") {
+      _argFilter = [filters].map((filter) => {
+        return splitKvFilterOption(filter);
+      });
+    } else if (filters && Array.isArray(filters)) {
+      _argFilter = filters.map((filter) => {
+        return splitKvFilterOption(filter);
+      });
     }
+
+    if (messageFilter) {
+      _argFilter = (_argFilter ?? []).concat(`( $.msg=${messageFilter} )`);
+    }
+    argFilter = `{ ${_argFilter.join(" && ")} }`;
   }
   return positionalFilter ?? argFilter;
 }
@@ -59,6 +63,7 @@ function buildRunOptions(argv) {
   const filterPattern = buildFilter({
     pattern: argv.pattern,
     filters: argv.filters,
+    messageFilter: argv.messageFilter,
   });
 
   return {

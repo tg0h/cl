@@ -4,6 +4,7 @@ import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import { run } from "./helper/cwClient.js";
 import { convertDate } from "./helper/time.js";
+import { decorate } from "./helper/decorate.js";
 import { format } from "./helper/format.js";
 
 let argv = yargs(hideBin(process.argv))
@@ -30,6 +31,7 @@ let argv = yargs(hideBin(process.argv))
       let result = await run(argv);
 
       let options = { prefixSgTime: argv.prefixSgTime };
+      result = decorate(result);
       format(result, options);
     },
   )

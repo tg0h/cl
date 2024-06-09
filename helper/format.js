@@ -30,8 +30,6 @@ function buildFormatOptions(argv) {
     }
   }
 
-  console.log("timg 🚀 argv", argv);
-
   return {
     prefixSgTime: argv.prefixSgTime,
     prettify: argv.prettify,

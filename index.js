@@ -27,6 +27,8 @@ let argv = yargs(hideBin(process.argv))
         });
     },
     async (argv) => {
+      if (argv.debug) console.log("timg argv", argv);
+
       let result = await run(argv);
 
       result = rewrite(result, { rewrite: argv.rewrite }); // rewrite text log level to number log level so that pino pretty can filter zzzz
@@ -41,6 +43,10 @@ let argv = yargs(hideBin(process.argv))
   })
   .option("e", {
     alias: "end",
+  })
+  .option("debug", {
+    alias: "d",
+    describe: "show debug logs",
   })
   .option("l", {
     alias: "logLevel",

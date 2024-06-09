@@ -50,6 +50,12 @@ let argv = yargs(hideBin(process.argv))
     describe:
       "minimum log level to print (f) fatal, (e) error, (w) warn, (i) info, (d) debug, (t) trace",
   })
+  .option("hideObject", {
+    alias: "H",
+    type: "boolean",
+    default: false,
+    describe: "do not show log body if not an error",
+  })
   .option("S", {
     alias: "singleLine",
     type: "boolean",
@@ -60,7 +66,7 @@ let argv = yargs(hideBin(process.argv))
     alias: "rewrite",
     default: true,
     describe:
-      "rewrite text log level of eg 'warn' to number log level of eg 40 so that pino pretty can filter the log level later",
+      "rewrite text log level of eg '' to number log level of eg 40 so that pino pretty can filter the log level later",
   })
   .option("prettify", {
     alias: "p",

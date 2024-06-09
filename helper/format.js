@@ -37,12 +37,13 @@ function buildFormatOptions(argv) {
     prettify: argv.prettify,
     singleLine: argv.singleLine,
     minimumLevel,
+    hideObject: argv.hideObject,
   };
 }
 
 function format(
   logEvents,
-  { prefixSgTime, prettify, minimumLevel, singleLine },
+  { prefixSgTime, prettify, minimumLevel, singleLine, hideObject },
 ) {
   // logEvent.eventId
   // logEvent.ingestionTime
@@ -58,6 +59,7 @@ function format(
     // levelFirst: false,
     // levelKey: "level",
     singleLine,
+    hideObject,
     // include: "level,time",
   });
 

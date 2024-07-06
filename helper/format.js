@@ -58,6 +58,14 @@ function format(
     // levelKey: "level",
     singleLine,
     hideObject,
+    customPrettifiers: {
+      // see https://github.com/jorgebucaran/colorette?tab=readme-ov-file#supported-colors
+      // for colors
+      clientId: (id) => `${chalk.bgGreen.black(id)}`,
+      campaignId: (id) => `${chalk.bgYellow.black(id)}`,
+      contactId: (id) => `${chalk.hex("#ffa500")(id)}`,
+      invoiceId: (id) => `${chalk.magenta(id)}`,
+    },
     // include: "level,time",
   });
 

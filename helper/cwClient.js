@@ -31,7 +31,7 @@ function splitKvFilterOption(filterOption) {
   return `( $.${key} ${operator} ${value} )`;
 }
 
-function buildFilter({ pattern, filters, messageFilter }) {
+function buildFilter({ pattern, filters, messageFilter, showBugs }) {
   let filterPatterns;
 
   let positionalFilter, argFilter, _argFilter;
@@ -43,7 +43,7 @@ function buildFilter({ pattern, filters, messageFilter }) {
     } else {
       positionalFilter = `"${pattern}"`;
     }
-  } else if (filters || messageFilter) {
+  } else if (filters || messageFilter || showBugs) {
     // cannot mix regex and json filter patterns, so use else if
     // -f option
     // json filters are surrounded by { }, eg { $.eventType =}
@@ -69,6 +69,11 @@ function buildFilter({ pattern, filters, messageFilter }) {
       // console.log("messageFilterArgs", `( ${messageFilterArgs} )`);
       _argFilter = (_argFilter ?? []).concat(`( ${messageFilterArgs} )`);
     }
+
+    if (showBugs) {
+      _argFilter = (_argFilter ?? []).concat(`( $.level = "error" )`);
+    }
+
     argFilter = `{ ${_argFilter.join(" && ")} }`;
   }
   return positionalFilter ?? argFilter;
@@ -79,6 +84,7 @@ function buildRunOptions(argv) {
     pattern: argv.pattern,
     filters: argv.filters,
     messageFilter: argv.messageFilter,
+    showBugs: argv.showBugs, // filter logs with $.level = "error"
   });
 
   return {

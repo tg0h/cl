@@ -57,8 +57,17 @@ function buildFilter({ pattern, filters, messageFilter }) {
       });
     }
 
+    // argFilter are the previous dynamic -f filters eg -f level=30 -f ... etc
     if (messageFilter) {
-      _argFilter = (_argFilter ?? []).concat(`( $.msg=*${messageFilter}* )`);
+      const messageFilterArgs = []
+        .concat(messageFilter)
+        .map((f) => {
+          return `( $.msg=*${f}* )`;
+        })
+        .join(" || ");
+
+      // console.log("messageFilterArgs", `( ${messageFilterArgs} )`);
+      _argFilter = (_argFilter ?? []).concat(`( ${messageFilterArgs} )`);
     }
     argFilter = `{ ${_argFilter.join(" && ")} }`;
   }

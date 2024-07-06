@@ -62,7 +62,7 @@ function buildFilter({ pattern, filters, messageFilter }) {
       const messageFilterArgs = []
         .concat(messageFilter)
         .map((f) => {
-          return `( $.msg=*${f}* )`;
+          return `( $.msg="*${f}*" )`;
         })
         .join(" || ");
 

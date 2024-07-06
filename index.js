@@ -11,6 +11,7 @@ let argv = yargs(hideBin(process.argv))
   .usage("$0 <logName> [pattern] [options]")
   // arrow brackets indicate that logname is mandatory, running cl without
   // the logName then runs the help automatically
+  .wrap(null)
   .command(
     "$0 <logName> [pattern]",
     "search cloudwatch logs",
@@ -37,7 +38,22 @@ let argv = yargs(hideBin(process.argv))
   )
   .option("s", {
     alias: "start",
-    describe: "start parameter",
+    describe: `start parameter -
+  900.01 as number returns today's date at 9am, 1 second - 9:00:01.000 in epoch ms
+  900.1 as number returns today's date at 9am, 1 second - 9:00:01.000 in epoch ms
+  900.59 as number returns today's date at 9am, 59 seconds - 9:00:59.000 in epoch ms
+  900 returns today's date at 9am in epoch ms
+  1423 returns today's date at 1423H in epoch ms
+  1,1423 returns the 1st of this month at 1423
+  19,900 returns the 19th of this month at 9am
+  19,1423 returns the 19th of this month at 1423
+  19,1423.59 returns the 19th of this month this year at 1423, 59 seconds
+  1908,1423 returns the 19th of august this year at 1423
+  1908,1423.59 returns the 19th of august this year at 1423, 59 seconds
+  5s returns 5 seconds ago
+  5m returns 5 minutes ago
+  5h returns 5 hours ago
+`,
   })
   .option("e", {
     alias: "end",
@@ -54,8 +70,8 @@ let argv = yargs(hideBin(process.argv))
   .option("filters", {
     alias: "f",
     type: "string",
-    describe:
-      "this filter is case sensitive. cloudwatch json filters to filter logs by specify k=v pairs eg -f req.method=POST -f number=30 -f boolean=true",
+    describe: `this filter is case sensitive. cloudwatch json filters to filter logs by specify k=v pairs 
+  eg -f req.method=POST -f number=30 -f boolean=true`,
   })
   .option("l", {
     alias: "logLevel",
@@ -80,8 +96,7 @@ let argv = yargs(hideBin(process.argv))
   .option("r", {
     alias: "rewrite",
     default: true,
-    describe:
-      "rewrite text log level of eg '' to number log level of eg 40 so that pino pretty can filter the log level later",
+    describe: `rewrite text log level of eg '' to number log level of eg 40 so that pino pretty can filter the log level later`,
   })
   .option("prettify", {
     alias: "p",

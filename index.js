@@ -18,8 +18,7 @@ let argv = yargs(hideBin(process.argv))
     (yargs) => {
       yargs
         .positional("logName", {
-          describe:
-            "cloudwatch log name to get aoeu aoenuho\n aoeuaoeu aoeuthhusnthaoeu \n",
+          describe: "cloudwatch log name to get",
           type: "string",
         })
         .positional("pattern", {

@@ -1,5 +1,6 @@
 import { convertDate, formatDate } from "./time.js";
 import { DateTime } from "luxon";
+import { parse } from "parsetime";
 
 import {
   CloudWatchLogsClient,
@@ -105,8 +106,8 @@ let run = async function ({ start, end, filterPattern, logName }) {
   // 1 hour ago
   let defaultStart = Date.now() - 10 * 60 * 1000;
 
-  let _start = start ? convertDate(start) : defaultStart;
-  let _end = end ? convertDate(end) : Date.now();
+  let _start = start ? parse(start) : defaultStart;
+  let _end = end ? parse(end) : Date.now();
   console.log("filter pattern is", filterPattern);
   console.log("start", formatDate(_start));
   console.log("end", formatDate(_end));

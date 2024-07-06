@@ -3,7 +3,6 @@
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import { run, buildRunOptions } from "./helper/cwClient.js";
-import { convertDate } from "./helper/time.js";
 import { decorate } from "./helper/decorate.js";
 import { rewrite } from "./helper/rewrite.js";
 import { format, buildFormatOptions } from "./helper/format.js";

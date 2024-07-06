@@ -57,6 +57,7 @@ let argv = yargs(hideBin(process.argv))
   })
   .option("e", {
     alias: "end",
+    describe: "see start parameter",
   })
   .option("debug", {
     alias: "d",
